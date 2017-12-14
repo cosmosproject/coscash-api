@@ -27,14 +27,14 @@ let validateUser = function (req, res, next) {
     return next();
 }
 
-Transaction.sync();
-User.sync().then(() => {
+
+sequelize.sync().then(() => {
     /** Get all user accounts */
     usersRouter.get('/', (req, res) => {
         User.findAll().then((users) => {
             return res.status(200).send(users);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(203).send(err);
         });
     });
 
@@ -44,7 +44,7 @@ User.sync().then(() => {
         User.findOne({ where: { id: userId } }).then((user) => {
             return res.status(200).send(user);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(203).send(err);
         });
     });
 
@@ -53,7 +53,7 @@ User.sync().then(() => {
         User.create(req.body).then((user) => {
             return res.status(200).send(user);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(203).send(err);
         });
     });
 
@@ -62,7 +62,7 @@ User.sync().then(() => {
         User.update({ where: { id: req.body.id } }).then((user) => {
             return res.status(200).send(user);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(203).send(err);
         });
     });
 
@@ -70,10 +70,15 @@ User.sync().then(() => {
     /** Get users' transactions */
     usersRouter.get('/:id([0-9]+)/transactions', (req, res) => {
         let userId = parseInt(req.params.id);
-        Transaction.find({ where: { UserID: userId } }).then((trans) => {
-            return res.status(200).send(trans);
+        let response = [];
+        Transaction.findAll({ where: { Sender: userId } }).then((trans) => {
+            trans.forEach((t) => { response.push(t)});
+            return Transaction.findAll({ where: { Recipient: userId}});
+        }).then((trans2) => {
+            trans2.forEach((t2) => { response.push(t2)});
+            return res.status(200).send(response);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(203).send(err);
         });
     });
 })

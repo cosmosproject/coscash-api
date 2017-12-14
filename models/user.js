@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         FirstName: { type: Sequelize.STRING, allowNull: false },
         Username: { type: Sequelize.STRING, allowNull: false, unique: true },
         Password: { type: Sequelize.STRING, allowNull: false },
+        PublicKey: { type: Sequelize.STRING, allowNull: true },
+        PrivateKey: { type: Sequelize.STRING, allowNull: true },
         DOB: { type: Sequelize.STRING, allowNull: true, defaultValue: "" },
         Street: { type: Sequelize.STRING, allowNull: true, defaultValue: "" },
         HouseNr: { type: Sequelize.STRING, allowNull: true, defaultValue: "" },
@@ -21,6 +23,8 @@ module.exports = (sequelize, DataTypes) => {
         Language: { type: Sequelize.STRING, allowNull: true, defaultValue: "en" },
         Verified: { type: Sequelize.BOOLEAN, defaultValue: false },
         Confirmed: { type: Sequelize.BOOLEAN, defaultValue: false },
-        Deleted: { type: Sequelize.BOOLEAN, defaultValue: false }
+        Deleted: { type: Sequelize.BOOLEAN, defaultValue: false },
+        Currency: { type: Sequelize.STRING, allowNull: true, defaultValue: 'EUR'},
+        Currency: { type: Sequelize.BOOLEAN, allowNull: true, defaultValue: true}
     });
 }

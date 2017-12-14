@@ -25,13 +25,13 @@ let validateUser = function (req, res, next) {
     return next();
 }
 
-Transaction.sync().then(() => {
+sequelize.sync().then(() => {
     /** Get all transactions */
     transactionsRouter.get('/', (req, res) => {
         Transaction.findAll().then((trans) => {
             return res.status(200).send(trans);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(400).send(err);
         });
     });
 
@@ -41,7 +41,7 @@ Transaction.sync().then(() => {
         Transaction.findOne({ where: { id: transId } }).then((trans) => {
             return res.status(200).send(trans);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(400).send(err);
         });
     });
 
@@ -50,7 +50,7 @@ Transaction.sync().then(() => {
         Transaction.create(req.body).then((trans) => {
             return res.status(200).send(trans);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(400).send(err);
         });
     });
 
@@ -59,7 +59,7 @@ Transaction.sync().then(() => {
         Transaction.update({ where: { id: req.body.id } }).then((trans) => {
             return res.status(200).send(trans);
         }, (err) => {
-            return res.status(404).send(err);
+            return res.status(400).send(err);
         });
     });
 });
